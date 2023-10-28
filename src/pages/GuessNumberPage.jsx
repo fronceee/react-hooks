@@ -1,46 +1,58 @@
-import {useState} from "react";
-import {Navbar} from "../components/Navbar.jsx";
+import { useEffect, useRef, useState } from "react";
+import { Navbar } from "../components/Navbar.jsx";
 
 export const GuessNumberPage = () => {
-  const [correctNumber, setCorrectNumber] = useState(Math.floor(Math.random() * 100) + 1)
-  const [guessingNumber, setGuessingNumber] = useState('')
-  const [hint, setHint] = useState('')
-  console.log('correct number: ', correctNumber)
+  const [correctNumber, setCorrectNumber] = useState(
+    Math.floor(Math.random() * 100) + 1
+  );
+  const [guessingNumber, setGuessingNumber] = useState("");
+  const [hint, setHint] = useState("");
+  const inputRef = useRef(null);
+  console.log("correct number: ", correctNumber);
 
   function updateGuessedNumber(e) {
-    setGuessingNumber(e.target.value)
+    setGuessingNumber(e.target.value);
   }
 
   function guess() {
-    let hint = ""
+    let hint = "";
     if (guessingNumber == correctNumber) {
-      hint = "Correct!! Congratulations~~"
+      hint = "Correct!! Congratulations~~";
     }
     if (guessingNumber < correctNumber) {
-      hint = "too less"
+      hint = "too less";
     }
     if (guessingNumber > correctNumber) {
-      hint = "too high"
+      hint = "too high";
     }
 
-    setHint(hint)
+    setHint(hint);
   }
 
   const reset = () => {
-    setCorrectNumber(Math.floor(Math.random() * 100) + 1)
-    setGuessingNumber('')
-    setHint('')
-  }
+    setCorrectNumber(Math.floor(Math.random() * 100) + 1);
+    setGuessingNumber("");
+    setHint("");
+  };
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   return (
     <div>
-      <Navbar/>
-
+      <Navbar />
       <h1>Let's guess the number (1-100)</h1>
-      <input value={guessingNumber} type={"number"} onChange={updateGuessedNumber}/> <br/>
+      <input
+        ref={inputRef}
+        value={guessingNumber}
+        type={"number"}
+        onChange={updateGuessedNumber}
+      />{" "}
+      <br />
       <button onClick={guess}>Guess</button>
       <button onClick={reset}>Reset</button>
       <h2>{hint}</h2>
     </div>
-  )
-}
+  );
+};
